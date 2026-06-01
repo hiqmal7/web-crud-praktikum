@@ -8,6 +8,11 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\BooksExport;
+use App\Imports\BooksImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -87,4 +92,45 @@ class BookController extends Controller
             ->route('books.index')
             ->with('success', 'Buku berhasil dihapus!');
     }
+
+    public function printPdf()
+    {
+         $books = Book::with('bookshelf')->latest()->get();
+         $pdf = Pdf::loadView('books.pdf', compact('books'))
+              ->setPaper('a4', 'landscape');
+         return $pdf->download('daftar-buku.pdf');
+    }
+
+    /**
+ * Export data buku ke Excel.
+ */
+public function exportExcel()
+{
+    return Excel::download(new BooksExport, 'data-buku.xlsx');
+}
+
+/**
+ * Tampilkan form upload file Excel untuk import.
+ */
+public function importForm()
+{
+    return view('books.import');
+}
+
+/**
+ * Proses import data buku dari file Excel.
+ */
+public function importExcel(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+    ]);
+
+    try {
+        Excel::import(new BooksImport, $request->file('file'));
+        return redirect()->route('books.index')->with('success', 'Data buku berhasil diimport!');
+    } catch (\Exception $e) {
+        return redirect()->route('books.index')->with('error', 'Gagal import: ' . $e->getMessage());
+    }
+}
 }

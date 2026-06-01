@@ -3,6 +3,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">📑 Detail Peminjaman</h2>
             <a href="{{ route('loan_details.create') }}" class="btn btn-primary">+ Tambah Detail</a>
+            <a href="{{ route('loan_details.print-pdf') }}" class="btn btn-danger" target="_blank">🖨️ Cetak PDF</a>
         </div>
     </x-slot>
 

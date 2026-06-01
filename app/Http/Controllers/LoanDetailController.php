@@ -8,6 +8,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LoanDetailController extends Controller
 {
@@ -127,5 +128,13 @@ class LoanDetailController extends Controller
         $loanDetail->update(['is_return' => true]);
 
         return back()->with('success', 'Buku berhasil ditandai sebagai dikembalikan!');
+    }
+
+    public function printPdf()
+    {
+        $loanDetails = LoanDetail::with('loan.user', 'book', 'return')->latest()->get();
+        $pdf = Pdf::loadView('loan_details.pdf', compact('loanDetails'))
+              ->setPaper('a4', 'landscape');
+        return $pdf->download('daftar-detail-peminjaman.pdf');
     }
 }

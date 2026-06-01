@@ -7,6 +7,7 @@ use App\Models\LoanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReturnController extends Controller
 {
@@ -120,4 +121,13 @@ class ReturnController extends Controller
         return redirect()->route('returns.index')
             ->with('success', 'Data pengembalian berhasil dihapus!');
     }
+
+    public function printPdf()
+    {
+        $returns = ReturnModel::with('loanDetail.loan.user', 'loanDetail.book')->latest()->get();
+        $pdf = Pdf::loadView('returns.pdf', compact('returns'))
+              ->setPaper('a4', 'landscape');
+        return $pdf->download('daftar-pengembalian.pdf');
+    }
+
 }

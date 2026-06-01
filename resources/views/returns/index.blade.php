@@ -3,6 +3,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">💵 Daftar Pengembalian</h2>
             <a href="{{ route('returns.create') }}" class="btn btn-primary">+ Tambah Pengembalian</a>
+            <a href="{{ route('returns.print-pdf') }}" class="btn btn-danger" target="_blank">🖨️ Cetak PDF</a>
         </div>
     </x-slot>
 

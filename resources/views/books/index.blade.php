@@ -3,6 +3,9 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">📚 Daftar Buku</h2>
             <a href="{{ route('books.create') }}" class="btn btn-primary">+ Tambah Buku</a>
+            <a href="{{ route('books.print-pdf') }}" class="btn btn-danger" target="_blank">🖨️ Cetak PDF</a>
+            <a href="{{ route('books.export-excel') }}" class="btn btn-success">📊 Export Excel</a>
+            <a href="{{ route('books.import') }}" class="btn btn-info">📥 Import Excel</a>
         </div>
     </x-slot>
 

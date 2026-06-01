@@ -3,6 +3,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">🗄️ Daftar Rak Buku</h2>
             <a href="{{ route('booksheifs.create') }}" class="btn btn-primary">+ Tambah Rak</a>
+            <a href="{{ route('booksheifs.print-pdf') }}" class="btn btn-danger" target="_blank">🖨️ Cetak PDF</a>
         </div>
     </x-slot>
 

@@ -6,6 +6,7 @@ use App\Models\Booksheif;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BooksheifController extends Controller
 {
@@ -92,5 +93,13 @@ class BooksheifController extends Controller
 
         return redirect()->route('booksheifs.index')
             ->with('success', 'Rak buku berhasil dihapus!');
+    }
+
+    public function printPdf()
+    {
+        $booksheifs = Booksheif::withCount('books')->latest()->get();
+        $pdf = Pdf::loadView('booksheifs.pdf', compact('booksheifs'))
+              ->setPaper('a4', 'portrait');
+        return $pdf->download('daftar-rak-buku.pdf');
     }
 }

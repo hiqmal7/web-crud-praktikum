@@ -8,6 +8,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LoanController extends Controller
 {
@@ -116,5 +117,13 @@ class LoanController extends Controller
 
         return redirect()->route('loans.index')
             ->with('success', 'Peminjaman berhasil dihapus!');
+    }
+
+    public function printPdf()
+    {
+        $loans = Loan::with('user', 'loanDetails.book')->latest()->get();
+        $pdf = Pdf::loadView('loans.pdf', compact('loans'))
+              ->setPaper('a4', 'landscape');
+        return $pdf->download('daftar-peminjaman.pdf');
     }
 }

@@ -3,6 +3,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">🏷️ Daftar Kategori</h2>
             <a href="{{ route('categories.create') }}" class="btn btn-primary">+ Tambah Kategori</a>
+            <a href="{{ route('categories.print-pdf') }}" class="btn btn-danger" target="_blank">🖨️ Cetak PDF</a>
         </div>
     </x-slot>
 
